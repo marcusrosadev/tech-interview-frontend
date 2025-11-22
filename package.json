@@ -1,0 +1,28 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"yarn start:frontend\" \"yarn start:backend\"",
+    "start:frontend": "cd frontend && yarn start",
+    "start:backend": "cd backend && yarn start",
+    "dev": "concurrently \"yarn start:frontend\" \"yarn start:backend\""
+  },
+  "dependencies": {
+    "@heroicons/react": "^2.2.0",
+    "axios": "^1.13.2",
+    "framer-motion": "^12.23.24",
+    "react-hot-toast": "^2.6.0",
+    "recharts": "^3.4.1"
+  },
+  "devDependencies": {
+    "@craco/craco": "^7.1.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.1",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "concurrently": "^8.2.2",
+    "lerna": "^8.0.2",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
+}
