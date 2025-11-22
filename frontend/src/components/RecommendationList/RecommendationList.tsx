@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircleIcon, XCircleIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
-import RadarChart from '@components/shared/RadarChart';
+import MatchProgressBar from '@components/shared/MatchProgressBar';
 import type { Recommendation } from '@appTypes';
 
 interface RecommendationListProps {
@@ -205,7 +205,7 @@ function RecommendationList({
                         </div>
                       )}
 
-                      {/* Gráfico de Radar */}
+                      {/* Barras de Progresso */}
                       {matchInfo.preferenceMatches !== undefined &&
                         matchInfo.featureMatches !== undefined &&
                         totalSelected > 0 && (
@@ -213,7 +213,7 @@ function RecommendationList({
                             <h4 className="text-sm font-semibold text-rd-dark mb-3 text-center">
                               Visualização da Pontuação
                             </h4>
-                            <RadarChart
+                            <MatchProgressBar
                               preferenceMatches={matchInfo.preferenceMatches}
                               featureMatches={matchInfo.featureMatches}
                               maxPreferences={selectedPreferences.length}
