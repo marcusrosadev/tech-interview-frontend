@@ -47,8 +47,6 @@ function Features({ features, selectedFeatures = [], onFeatureChange }: Features
       <h2 className="text-lg font-bold mb-3 text-gray-800">Funcionalidades:</h2>
       <div className="space-y-2">
         {features.map((feature, index) => {
-          // Usa uma combinação de feature + index para criar key única
-          // Em produção, features deveriam ter IDs únicos
           const uniqueKey = `feature-${feature}-${index}`;
           return (
             <Checkbox

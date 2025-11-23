@@ -54,7 +54,7 @@ function RecommendationList({
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-24">
       <h2 className="text-2xl font-bold mb-6 text-rd-dark">Lista de Recomendações</h2>
 
       {!hasRecommendations && (
