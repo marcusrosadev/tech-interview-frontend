@@ -6,6 +6,7 @@ const calculateProductScore = (
   selectedPreferences: string[],
   selectedFeatures: string[]
 ): ScoreData => {
+  // Pontuação calculada pela contagem simples de matches (Preferências + Funcionalidades)
   const matchingPreferences = product.preferences.filter((preference: string) =>
     selectedPreferences.includes(preference)
   );
@@ -95,6 +96,7 @@ const selectBestProduct = (
     return product.matchInfo?.score === maxScore;
   });
 
+  // Regra do Critério de Aceite: Em caso de empate na pontuação máxima, retorna o último produto válido da lista original
   if (productsWithMaxScore.length > 1) {
     for (let i = originalProducts.length - 1; i >= 0; i--) {
       const product = originalProducts[i];
@@ -123,6 +125,13 @@ const selectMultipleProducts = (sortedProducts: Recommendation[]): Recommendatio
   return sortedProducts;
 };
 
+/**
+ * Calcula e retorna recomendações de produtos baseado nas seleções do usuário.
+ *
+ * @param formData - Dados do formulário contendo preferências selecionadas, funcionalidades selecionadas e tipo de recomendação (SingleProduct ou MultipleProducts)
+ * @param products - Array de produtos disponíveis para análise
+ * @returns Array de produtos recomendados ordenados por pontuação (maior primeiro). Para SingleProduct retorna um único produto; para MultipleProducts retorna todos os produtos com matches, ordenados.
+ */
 const getRecommendations = (formData: FormData | null, products: Product[]): Recommendation[] => {
   if (!formData || !products || products.length === 0) {
     return [];
