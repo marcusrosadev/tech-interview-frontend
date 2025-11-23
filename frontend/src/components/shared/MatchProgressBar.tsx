@@ -8,22 +8,28 @@ interface MatchProgressBarProps {
 }
 
 /**
- * Componente de barras de progresso horizontais para visualizar pontuação de matches
+ * Componente para exibir barras de progresso horizontais
+ * representando a porcentagem de matches de preferências e funcionalidades
  */
-function MatchProgressBar({ preferenceMatches, featureMatches, maxPreferences, maxFeatures }: MatchProgressBarProps) {
-  // Calcula as porcentagens (0-100)
-  const preferencePercentage = maxPreferences > 0 ? (preferenceMatches / maxPreferences) * 100 : 0;
-  const featurePercentage = maxFeatures > 0 ? (featureMatches / maxFeatures) * 100 : 0;
+function MatchProgressBar({
+  preferenceMatches,
+  featureMatches,
+  maxPreferences,
+  maxFeatures,
+}: MatchProgressBarProps) {
+  // Calcula a porcentagem de matches
+  const preferencePercentage =
+    maxPreferences > 0 ? Math.round((preferenceMatches / maxPreferences) * 100) : 0;
+  const featurePercentage =
+    maxFeatures > 0 ? Math.round((featureMatches / maxFeatures) * 100) : 0;
 
   return (
-    <div className="w-full space-y-4">
+    <div className="space-y-4">
       {/* Barra de Preferências */}
-      <div>
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-semibold text-rd-dark">Preferências Match (%)</span>
-          <span className="text-sm font-bold text-indigo-600">
-            {Math.round(preferencePercentage)}%
-          </span>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium text-gray-700">Preferências Match</span>
+          <span className="text-sm font-semibold text-indigo-600">{preferencePercentage}%</span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
           <div
@@ -31,15 +37,16 @@ function MatchProgressBar({ preferenceMatches, featureMatches, maxPreferences, m
             style={{ width: `${preferencePercentage}%` }}
           />
         </div>
+        <div className="text-xs text-gray-500 text-right">
+          {preferenceMatches} de {maxPreferences} preferências
+        </div>
       </div>
 
       {/* Barra de Funcionalidades */}
-      <div>
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-semibold text-rd-dark">Funcionalidades Match (%)</span>
-          <span className="text-sm font-bold text-indigo-600">
-            {Math.round(featurePercentage)}%
-          </span>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium text-gray-700">Funcionalidades Match</span>
+          <span className="text-sm font-semibold text-indigo-600">{featurePercentage}%</span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
           <div
@@ -47,10 +54,12 @@ function MatchProgressBar({ preferenceMatches, featureMatches, maxPreferences, m
             style={{ width: `${featurePercentage}%` }}
           />
         </div>
+        <div className="text-xs text-gray-500 text-right">
+          {featureMatches} de {maxFeatures} funcionalidades
+        </div>
       </div>
     </div>
   );
 }
 
 export default MatchProgressBar;
-
