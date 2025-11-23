@@ -10,6 +10,7 @@ Sistema de recomendação de produtos baseado em preferências e funcionalidades
 - [Decisões Técnicas](#-decisões-técnicas)
 - [Performance e Complexidade](#-performance-e-complexidade)
 - [Como Executar](#-como-executar)
+- [Testes](#-testes)
 - [Documentação da API](#-documentação-da-api)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
 - [Próximos Passos](#-próximos-passos-para-escalabilidade)
@@ -23,12 +24,17 @@ Sistema que permite aos usuários selecionar preferências e funcionalidades des
 
 ### Funcionalidades
 
+- **Layout Stepper Horizontal**: Navegação fluida entre etapas (Preferências → Funcionalidades → Tipo de Recomendação) com transições suaves
 - Seleção de preferências e funcionalidades via formulário
 - Recomendação de produto único (SingleProduct) ou múltiplos produtos (MultipleProducts)
 - Algoritmo de pontuação baseado em matches de preferências e features
 - Tratamento de empates retornando o último produto da lista original
-- Validação de formulário com feedback visual
+- Validação de formulário com feedback visual e toast notifications
+- **Botão "Limpar Seleções"**: Permite resetar todas as seleções do formulário rapidamente
+- **Footer fixo**: Botões de ação sempre visíveis na parte inferior da tela
 - Interface responsiva com Tailwind CSS
+- Visualizações interativas com barras de progresso para matches de preferências e funcionalidades
+- Cards de recomendações com animações de entrada e estados expandíveis
 
 ---
 
@@ -224,6 +230,26 @@ Componente `Radio` dedicado para semântica HTML correta e melhor acessibilidade
 
 Validação no Form (UX) e no Service (robustez) para defesa em profundidade.
 
+### 7. Path Aliases com CRACO
+
+Configuração de aliases de caminho (`@components`, `@hooks`, etc.) via CRACO para imports mais limpos e manutenibilidade.
+
+### 8. Estilos Centralizados
+
+Pasta `styles/` dedicada para organizar estilos globais (global.css, tailwind.css) com barrel export para facilitar imports.
+
+### 9. Toast Notifications Customizado
+
+Sistema de toast próprio usando React Context e Tailwind CSS, sem dependências externas, otimizado para performance.
+
+### 10. Stepper Horizontal
+
+Navegação por etapas com transições suaves usando Framer Motion, melhorando a experiência do usuário e reduzindo scroll vertical.
+
+### 11. Footer Fixo
+
+Botões de ação sempre visíveis na parte inferior da tela, garantindo acesso fácil sem necessidade de scroll.
+
 ---
 
 ## ⚡ Performance e Complexidade
@@ -303,26 +329,63 @@ Após executar `yarn start`, os serviços estarão disponíveis em:
 
 ### Cobertura de Testes
 
-O projeto inclui testes unitários que cobrem todos os casos de uso:
+O projeto inclui testes unitários que cobrem todos os casos de uso obrigatórios:
 
-- ✅ Recomendação SingleProduct com match único
-- ✅ Recomendação MultipleProducts com múltiplos matches
-- ✅ SingleProduct com múltiplos produtos de match (seleciona um)
-- ✅ Tratamento de empates (retorna último da lista original)
-- ✅ Caso sem matches (retorna array vazio)
-- ✅ Validação de dados inválidos (formData null, produtos vazios)
-- ✅ Tipo de recomendação não especificado
+#### Casos Obrigatórios ✅
+
+1. **Retorno de Produto Único (SingleProduct)**
+   - Teste verifica que apenas um produto é retornado
+   - Produto correto baseado nas preferências e funcionalidades selecionadas
+
+2. **Retorno de Múltiplos Produtos Ordenados (MultipleProducts)**
+   - Teste verifica que múltiplos produtos são retornados
+   - Produtos ordenados por pontuação (maior primeiro)
+   - Ordem correta dos produtos validada
+
+3. **Cenário de Empate na Pontuação Máxima**
+   - Teste garante que em caso de empate, o último produto da lista original é retornado
+   - Validação da lógica de tratamento de empates
+   - Último produto com pontuação máxima é selecionado
+
+4. **Cenário de Zero Matches**
+   - Teste verifica que array vazio é retornado quando não há matches
+   - Validação de cenário sem correspondências
+   - Retorno consistente de `[]`
+
+#### Casos Adicionais ✅
+
+- Validação de dados inválidos (formData null, produtos vazios)
+- Tipo de recomendação não especificado
+- SingleProduct com múltiplos produtos de match (seleciona um)
 
 ### Executando Testes
+
+Para executar todos os testes:
 
 ```bash
 cd frontend
 yarn test
 ```
 
+Para executar apenas os testes do serviço de recomendação:
+
+```bash
+cd frontend
+yarn test recommendation.service.test.ts
+```
+
+### Confirmação de Cobertura
+
+Todos os casos de uso obrigatórios estão implementados e testados:
+
+- ✅ **Retorno de Produto Único**: Teste valida que apenas um produto é retornado
+- ✅ **Retorno de Múltiplos Produtos Ordenados**: Teste verifica ordenação por pontuação (maior primeiro)
+- ✅ **Cenário de Empate**: Teste garante que o último produto da lista original é retornado em caso de empate na pontuação máxima
+- ✅ **Cenário de Zero Matches**: Teste verifica que array vazio `[]` é retornado quando não há matches
+
 ### Arquivos de Teste
 
-- `services/recommendation.service.test.js` - Testes do serviço de recomendação
+- `services/recommendation.service.test.ts` - Testes unitários do serviço de recomendação cobrindo todos os casos de uso obrigatórios com JSDoc explicativo
 
 ---
 
@@ -395,15 +458,27 @@ tech-interview-frontend-entry-level/
 │   └── src/
 │       ├── components/        # Componentes React
 │       │   ├── Form/         # Formulário de seleção
+│       │   │   ├── Fields/   # Campos do formulário (Preferências, Funcionalidades, Tipo)
+│       │   │   ├── FormStepper/  # Stepper horizontal com navegação entre etapas
+│       │   │   ├── ResetButton/  # Botão de reset de seleções
+│       │   │   └── SubmitButton/ # Botão de submissão
 │       │   ├── RecommendationList/  # Lista de resultados
-│       │   └── shared/       # Componentes reutilizáveis
+│       │   ├── shared/       # Componentes reutilizáveis (Checkbox, Radio, MatchProgressBar)
+│       │   └── icons/        # Ícones customizados
+│       │
+│       ├── styles/           # Estilos globais centralizados
+│       │   ├── global.css    # Estilos globais da aplicação
+│       │   ├── tailwind.css  # Configuração do Tailwind CSS
+│       │   └── index.ts      # Barrel export para imports
 │       │
 │       ├── constants/        # Constantes da aplicação
-│       ├── hooks/            # Hooks customizados
-│       ├── services/         # Lógica de negócio
+│       ├── hooks/            # Hooks customizados (useForm, useProducts, useRecommendations, useToast)
+│       ├── services/         # Lógica de negócio (product.service, recommendation.service)
+│       ├── types/            # Tipos TypeScript (interfaces e tipos)
+│       ├── utils/            # Utilitários (iconMapper)
 │       ├── mocks/            # Dados mock para testes
-│       ├── App.js            # Componente principal
-│       └── index.js          # Entry point
+│       ├── App.tsx           # Componente principal
+│       └── index.tsx         # Entry point
 │
 ├── install.sh                # Script de instalação
 └── package.json              # Configuração do monorepo
@@ -554,18 +629,22 @@ tech-interview-frontend-entry-level/
 - React 18.2.0
 - TypeScript 5.9.3
 - Tailwind CSS 3.4.1
-- Axios
+- Axios 1.13.2
 - React Testing Library
+- Framer Motion 12.23.24 (animações)
+- Heroicons 2.2.0 (ícones)
 
 ### Backend
 - json-server 1.0.0
 - Node.js 18.3+
 
 ### Ferramentas
-- Lerna
-- ESLint
-- Yarn
-- Create React App
+- CRACO 7.1.0 (customização do Create React App)
+- Lerna 8.0.2
+- ESLint 8.56.0
+- Yarn 1.22.22
+- Create React App 5.0.1
+- Concurrently 8.2.2 (execução simultânea de scripts)
 
 ---
 
@@ -573,11 +652,14 @@ tech-interview-frontend-entry-level/
 
 - **Backend:** json-server como mock da API (porta 3001)
 - **Algoritmo:** Implementado em `recommendation.service.ts` com complexidade O(n log n)
-- **Testes:** Testes unitários em `recommendation.service.test.ts` cobrindo todos os casos de uso
+- **Testes:** Testes unitários em `recommendation.service.test.ts` cobrindo todos os casos de uso obrigatórios (Produto Único, Múltiplos Produtos, Empates, Zero Matches)
 - **Linguagem:** TypeScript 5.9.3 (com strict mode habilitado)
 - **Framework:** React 18.2.0
-- **Estilização:** Tailwind CSS 3.4.1
+- **Estilização:** Tailwind CSS 3.4.1 com estilos globais centralizados em `styles/`
 - **Type Safety:** Interfaces e tipos definidos em `types/index.ts` para garantir type safety em tempo de compilação
+- **Path Aliases:** Configurados via CRACO e tsconfig.json (`@components`, `@hooks`, `@services`, `@appTypes`, `@constants`, `@utils`, `@mocks`)
+- **UI/UX:** Stepper horizontal com navegação por etapas, footer fixo, animações com Framer Motion, toast notifications customizadas
+- **Arquitetura:** Separação clara de responsabilidades (Services → Hooks → Components) seguindo princípios de Clean Architecture
 
 ---
 

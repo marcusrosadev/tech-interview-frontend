@@ -4,10 +4,6 @@ interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   children: React.ReactNode;
 }
 
-/**
- * Componente Checkbox estilizado como Card
- * Quando selecionado, a borda muda para azul escuro com sombra
- */
 function Checkbox({ children, checked, ...props }: CheckboxProps) {
   return (
     <label

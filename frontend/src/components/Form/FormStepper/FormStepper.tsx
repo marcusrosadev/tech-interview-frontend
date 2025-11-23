@@ -15,9 +15,6 @@ interface FormStepperProps {
 
 const TOTAL_STEPS = 3;
 
-/**
- * Componente Stepper para navegação horizontal entre etapas do formulário
- */
 function FormStepper({
   preferences,
   features,
@@ -28,7 +25,6 @@ function FormStepper({
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [direction, setDirection] = useState<'left' | 'right'>('right');
 
-  // Reset para etapa 1 quando o formulário for limpo
   useEffect(() => {
     if (
       formData.selectedPreferences.length === 0 &&
@@ -66,13 +62,10 @@ function FormStepper({
   const canGoNext = (): boolean => {
     switch (currentStep) {
       case 1:
-        // Pode avançar mesmo sem selecionar preferências
         return true;
       case 2:
-        // Pode avançar mesmo sem selecionar funcionalidades
         return true;
       case 3:
-        // Precisa selecionar tipo de recomendação
         return !!formData.selectedRecommendationType;
       default:
         return false;
@@ -94,7 +87,6 @@ function FormStepper({
 
   return (
     <div className="w-full">
-      {/* Barra de Progresso */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-gray-600">
@@ -110,10 +102,8 @@ function FormStepper({
         </div>
       </div>
 
-      {/* Container do conteúdo com overflow hidden para esconder etapas adjacentes */}
       <div className="relative overflow-hidden min-h-[350px] max-h-[500px]">
         <AnimatePresence mode="wait">
-          {/* Etapa 1: Preferências */}
           {currentStep === 1 && (
             <motion.div
               key="step-1"
@@ -131,7 +121,6 @@ function FormStepper({
             </motion.div>
           )}
 
-          {/* Etapa 2: Funcionalidades */}
           {currentStep === 2 && (
             <motion.div
               key="step-2"
@@ -149,7 +138,6 @@ function FormStepper({
             </motion.div>
           )}
 
-          {/* Etapa 3: Tipo de Recomendação */}
           {currentStep === 3 && (
             <motion.div
               key="step-3"
@@ -175,7 +163,6 @@ function FormStepper({
         </AnimatePresence>
       </div>
 
-      {/* Navegação entre etapas */}
       <div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-200">
         <button
           type="button"

@@ -10,9 +10,6 @@ interface RadioProps {
   className?: string;
 }
 
-/**
- * Componente Radio reutilizável
- */
 function Radio({ value, checked, onChange, name, id, children, className = '' }: RadioProps) {
   return (
     <label htmlFor={id} className={`flex items-center cursor-pointer outline-none ${className}`}>

@@ -15,9 +15,6 @@ interface RecommendationListProps {
   selectedFeatures?: string[];
 }
 
-/**
- * Componente para exibir a lista de produtos recomendados
- */
 function RecommendationList({
   recommendations = [],
   selectedPreferences = [],
@@ -30,7 +27,6 @@ function RecommendationList({
     setExpandedProductId(expandedProductId === productId ? null : productId);
   };
 
-  // Variantes de animação para os cards
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

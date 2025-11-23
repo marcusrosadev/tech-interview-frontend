@@ -8,10 +8,6 @@ interface RecommendationTypeProps {
   onRecommendationTypeChange: (type: RecommendationTypeValue) => void;
 }
 
-/**
- * Componente para seleção do tipo de recomendação
- * Permite ao usuário escolher entre recomendação única ou múltiplos produtos
- */
 function RecommendationType({ selectedType = '', onRecommendationTypeChange }: RecommendationTypeProps) {
   const handleChange = (type: RecommendationTypeValue) => {
     onRecommendationTypeChange(type);

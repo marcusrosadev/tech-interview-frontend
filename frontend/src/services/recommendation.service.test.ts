@@ -19,7 +19,7 @@ describe('recommendationService', () => {
     expect(recommendations[0].name).toBe('RD Conversas');
   });
 
-  test('Retorna recomendações corretas para MultipleProducts com base nas preferências selecionadas', () => {
+  test('Retorna recomendações corretas para MultipleProducts ordenadas por pontuação', () => {
     const formData: FormData = {
       selectedPreferences: [
         'Integração fácil com ferramentas de e-mail',
@@ -43,6 +43,9 @@ describe('recommendationService', () => {
       'RD Station CRM',
       'RD Station Marketing',
     ]);
+    expect(recommendations[0].matchInfo?.score).toBeGreaterThanOrEqual(
+      recommendations[1].matchInfo?.score || 0
+    );
   });
 
   test('Retorna apenas um produto para SingleProduct com mais de um produto de match', () => {
@@ -67,7 +70,7 @@ describe('recommendationService', () => {
     expect(recommendations[0].name).toBe('RD Station Marketing');
   });
 
-  test('Retorna o último match em caso de empate para SingleProduct', () => {
+  test('Retorna o último produto da lista original em caso de empate para SingleProduct', () => {
     const formData: FormData = {
       selectedPreferences: ['Automação de marketing', 'Integração com chatbots'],
       selectedRecommendationType: 'SingleProduct',
@@ -81,6 +84,7 @@ describe('recommendationService', () => {
 
     expect(recommendations).toHaveLength(1);
     expect(recommendations[0].name).toBe('RD Conversas');
+    expect(recommendations[0].id).toBe(3);
   });
 
   test('Retorna array vazio quando não há matches', () => {

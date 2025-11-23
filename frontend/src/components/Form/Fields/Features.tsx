@@ -7,32 +7,22 @@ interface FeaturesProps {
   onFeatureChange: (features: string[]) => void;
 }
 
-/**
- * Compara dois arrays de strings para verificar se são iguais
- */
 const arraysEqual = (a: string[], b: string[]): boolean => {
   if (a.length !== b.length) return false;
   return a.every((val, index) => val === b[index]);
 };
 
-/**
- * Componente para seleção de features
- */
 function Features({ features, selectedFeatures = [], onFeatureChange }: FeaturesProps) {
   const [currentFeatures, setCurrentFeatures] = useState<string[]>(selectedFeatures);
   const prevSelectedRef = useRef<string[]>(selectedFeatures);
 
   useEffect(() => {
-    // Só atualiza se o array realmente mudou (comparação profunda)
     if (!arraysEqual(prevSelectedRef.current, selectedFeatures)) {
       setCurrentFeatures(selectedFeatures);
       prevSelectedRef.current = selectedFeatures;
     }
   }, [selectedFeatures]);
 
-  /**
-   * Handler para mudança de feature individual
-   */
   const handleFeatureChange = (feature: string): void => {
     const updatedFeatures = currentFeatures.includes(feature)
       ? currentFeatures.filter((feat) => feat !== feature)

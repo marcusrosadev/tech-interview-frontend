@@ -6,9 +6,6 @@ interface ResetButtonProps {
   text?: string;
 }
 
-/**
- * Botão secundário para limpar/resetar seleções do formulário
- */
 function ResetButton({ onClick, text = 'Limpar Seleções' }: ResetButtonProps) {
   return (
     <button

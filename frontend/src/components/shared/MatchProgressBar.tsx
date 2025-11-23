@@ -7,17 +7,12 @@ interface MatchProgressBarProps {
   maxFeatures: number;
 }
 
-/**
- * Componente para exibir barras de progresso horizontais
- * representando a porcentagem de matches de preferências e funcionalidades
- */
 function MatchProgressBar({
   preferenceMatches,
   featureMatches,
   maxPreferences,
   maxFeatures,
 }: MatchProgressBarProps) {
-  // Calcula a porcentagem de matches
   const preferencePercentage =
     maxPreferences > 0 ? Math.round((preferenceMatches / maxPreferences) * 100) : 0;
   const featurePercentage =
@@ -25,7 +20,6 @@ function MatchProgressBar({
 
   return (
     <div className="space-y-4">
-      {/* Barra de Preferências */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-gray-700">Preferências Match</span>
@@ -48,7 +42,6 @@ function MatchProgressBar({
         </div>
       </div>
 
-      {/* Barra de Funcionalidades */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-gray-700">Funcionalidades Match</span>

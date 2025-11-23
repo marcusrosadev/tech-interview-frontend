@@ -8,16 +8,9 @@ interface UseRecommendationsReturn {
   setRecommendations: (recommendations: Recommendation[]) => void;
 }
 
-/**
- * Hook customizado para gerenciar recomendações de produtos
- * Encapsula a lógica de obtenção de recomendações usando o serviço de recomendação
- */
 function useRecommendations(products: Product[]): UseRecommendationsReturn {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
 
-  /**
-   * Obtém recomendações baseadas nos dados do formulário
-   */
   const getRecommendations = (formData: FormData): Recommendation[] => {
     if (!products || products.length === 0) {
       return [];

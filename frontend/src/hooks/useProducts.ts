@@ -10,10 +10,6 @@ interface UseProductsReturn {
   error?: Error | null;
 }
 
-/**
- * Hook customizado para gerenciar produtos, preferências e features
- * Carrega os produtos do servidor e extrai preferências e features únicas
- */
 const useProducts = (): UseProductsReturn => {
   const [preferences, setPreferences] = useState<string[]>([]);
   const [features, setFeatures] = useState<string[]>([]);
@@ -22,9 +18,6 @@ const useProducts = (): UseProductsReturn => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    /**
-     * Carrega produtos do servidor e processa preferências e features
-     */
     const fetchData = async (): Promise<void> => {
       try {
         setIsLoading(true);
@@ -36,15 +29,12 @@ const useProducts = (): UseProductsReturn => {
 
         setProducts(productsData);
 
-        // Extrai preferências e features de todos os produtos
         productsData.forEach((product) => {
-          // Seleciona 2 preferências aleatórias de cada produto
           const productPreferences = product.preferences
             .sort(() => Math.random() - 0.5)
             .slice(0, 2);
           allPreferences.push(...productPreferences);
 
-          // Seleciona 2 features aleatórias de cada produto
           const productFeatures = product.features
             .sort(() => Math.random() - 0.5)
             .slice(0, 2);
@@ -68,9 +58,6 @@ const useProducts = (): UseProductsReturn => {
     preferences,
     features,
     products,
-    // isLoading e error podem ser usados para melhorar UX no futuro
-    // isLoading,
-    // error,
   };
 };
 

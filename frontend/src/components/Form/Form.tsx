@@ -12,9 +12,6 @@ interface FormProps {
   onReset?: () => void;
 }
 
-/**
- * Componente de formulário para coleta de preferências e features do usuário
- */
 function Form({ onRecommendationsChange, onReset }: FormProps) {
   const { preferences, features, products } = useProducts();
   const { formData, handleChange, reset } = useForm({
@@ -27,15 +24,10 @@ function Form({ onRecommendationsChange, onReset }: FormProps) {
   const [validationError, setValidationError] = useState<string>('');
   const { showToast } = useToast();
 
-  /**
-   * Handler para submissão do formulário
-   * Obtém as recomendações baseadas nos dados do formulário e as passa para o componente pai
-   */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     setValidationError('');
 
-    // Valida se há tipo de recomendação selecionado
     if (!formData.selectedRecommendationType) {
       const errorMsg = 'Por favor, selecione um tipo de recomendação.';
       setValidationError(errorMsg);
@@ -43,7 +35,6 @@ function Form({ onRecommendationsChange, onReset }: FormProps) {
       return;
     }
 
-    // Valida se há pelo menos uma preferência ou feature selecionada
     if (
       formData.selectedPreferences.length === 0 &&
       formData.selectedFeatures.length === 0
@@ -54,14 +45,11 @@ function Form({ onRecommendationsChange, onReset }: FormProps) {
       return;
     }
 
-    // Obtém as recomendações baseadas nos dados do formulário
     const recommendations = getRecommendations(formData);
 
-    // Passa as recomendações e formData para o componente pai via callback
     if (onRecommendationsChange) {
       onRecommendationsChange(recommendations, formData);
 
-      // Toast de sucesso
       if (recommendations.length > 0) {
         showToast(
           `${recommendations.length} produto${recommendations.length > 1 ? 's' : ''} encontrado${recommendations.length > 1 ? 's' : ''}!`,
@@ -74,10 +62,6 @@ function Form({ onRecommendationsChange, onReset }: FormProps) {
     }
   };
 
-  /**
-   * Handler para resetar o formulário
-   * Limpa todas as seleções e chama o callback onReset se fornecido
-   */
   const handleReset = (): void => {
     reset();
     setValidationError('');
@@ -101,7 +85,6 @@ function Form({ onRecommendationsChange, onReset }: FormProps) {
           formData={formData}
           onFormDataChange={(field, value) => {
             handleChange(field, value);
-            // Limpa erro de validação quando tipo é selecionado
             if (field === 'selectedRecommendationType' && value && validationError) {
               setValidationError('');
             }
@@ -110,7 +93,6 @@ function Form({ onRecommendationsChange, onReset }: FormProps) {
         />
       </form>
 
-      {/* Footer fixo com botões de ação */}
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-white shadow-2xl z-50 border-t border-gray-200">
         <div className="flex justify-end space-x-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ResetButton onClick={handleReset} />
