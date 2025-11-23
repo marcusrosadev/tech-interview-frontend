@@ -12,10 +12,10 @@ function Checkbox({ children, checked, ...props }: CheckboxProps) {
   return (
     <label
       className={`
-        flex items-center p-3 rounded-lg border-2 cursor-pointer transition-all duration-200 outline-none
+        flex items-center p-3 rounded-lg border-2 cursor-pointer transition-all duration-200 outline-none bg-white
         ${checked
-          ? 'border-rd-cyan bg-rd-cyan-light shadow-md'
-          : 'border-gray-300 bg-white hover:border-rd-cyan hover:shadow-sm'
+          ? 'border-rd-cyan shadow-md'
+          : 'border-gray-300 hover:border-rd-cyan hover:shadow-sm'
         }
       `}
       tabIndex={0}

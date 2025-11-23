@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useToast } from '@hooks/useToast';
-import { Preferences, Features, RecommendationType } from './Fields';
-import { SubmitButton } from './SubmitButton';
+import { FormStepper } from './FormStepper';
 import { ResetButton } from './ResetButton';
 import useProducts from '@hooks/useProducts';
 import useForm from '@hooks/useForm';
 import useRecommendations from '@hooks/useRecommendations';
 import type { Recommendation, FormData } from '@appTypes';
-import type { RecommendationType as RecommendationTypeValue } from '@constants/recommendationTypes';
 
 interface FormProps {
   onRecommendationsChange: (recommendations: Recommendation[], formData: FormData) => void;
@@ -97,37 +95,19 @@ function Form({ onRecommendationsChange, onReset }: FormProps) {
         onSubmit={handleSubmit}
         noValidate
       >
-        <Preferences
+        <FormStepper
           preferences={preferences}
-          selectedPreferences={formData.selectedPreferences}
-          onPreferenceChange={(selected) =>
-            handleChange('selectedPreferences', selected)
-          }
-        />
-        <div className="border-t border-gray-300 my-6"></div>
-        <Features
           features={features}
-          selectedFeatures={formData.selectedFeatures}
-          onFeatureChange={(selected) =>
-            handleChange('selectedFeatures', selected)
-          }
-        />
-        <div className="border-t border-gray-300 my-6"></div>
-        <RecommendationType
-          selectedType={formData.selectedRecommendationType}
-          onRecommendationTypeChange={(selected: RecommendationTypeValue) => {
-            handleChange('selectedRecommendationType', selected);
+          formData={formData}
+          onFormDataChange={(field, value) => {
+            handleChange(field, value);
             // Limpa erro de validação quando tipo é selecionado
-            if (validationError && selected) {
+            if (field === 'selectedRecommendationType' && value && validationError) {
               setValidationError('');
             }
           }}
+          validationError={validationError}
         />
-        {validationError && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-            {validationError}
-          </div>
-        )}
       </form>
 
       {/* Footer fixo com botões de ação */}
