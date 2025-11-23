@@ -4,7 +4,7 @@
       "id": 1,
       "name": "RD Station CRM",
       "category": "Vendas",
-      "icon": "UserGroupIcon", 
+      "icon": "BriefcaseIcon", 
       "preferences": [
         "Integração fácil com ferramentas de e-mail",
         "Personalização de funis de vendas",
@@ -20,7 +20,7 @@
       "id": 2,
       "name": "RD Station Marketing",
       "category": "Marketing",
-      "icon": "MegaphoneIcon",
+      "icon": "RocketLaunchIcon",
       "preferences": [
         "Automação de marketing",
         "Testes A/B para otimização de campanhas",
@@ -52,7 +52,7 @@
       "id": 4,
       "name": "RD Mentor AI",
       "category": "Uso de Inteligência Artificial",
-      "icon": "LightBulbIcon",
+      "icon": "CpuChipIcon",
       "preferences": [
         "Análise preditiva de dados",
         "Recomendações personalizadas para usuários",

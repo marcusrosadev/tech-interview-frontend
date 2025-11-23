@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircleIcon, XCircleIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
+import { CheckCircleIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
 import MatchProgressBar from '@components/shared/MatchProgressBar';
+import { getIconComponent } from '@utils/iconMapper';
 import type { Recommendation } from '@appTypes';
 
 interface RecommendationListProps {
@@ -102,12 +103,12 @@ function RecommendationList({
                     <div className="flex-1">
                       {/* Nome do Produto */}
                       <div className="flex items-center gap-3 mb-2">
+                        {/* Ícone do Produto */}
+                        {getIconComponent(recommendation.icon, 'w-7 h-7 text-rd-cyan flex-shrink-0')}
                         <h3 className="font-bold text-xl text-rd-dark">{recommendation.name}</h3>
-                        {/* Ícone de Status */}
-                        {hasMatches ? (
+                        {/* Ícone de Status - Apenas se pontuação > 0 */}
+                        {hasMatches && (
                           <CheckCircleIcon className="w-6 h-6 text-green-500 flex-shrink-0" />
-                        ) : (
-                          <XCircleIcon className="w-6 h-6 text-red-500 flex-shrink-0" />
                         )}
                       </div>
 
@@ -165,8 +166,7 @@ function RecommendationList({
                         <div className="space-y-4">
                           {matchInfo.matchingPreferences && matchInfo.matchingPreferences.length > 0 && (
                             <div>
-                              <h4 className="text-sm font-semibold text-rd-dark mb-2 flex items-center gap-2">
-                                <CheckCircleIcon className="w-4 h-4 text-green-500" />
+                              <h4 className="text-sm font-semibold text-green-600 mb-2">
                                 Preferências que deram match:
                               </h4>
                               <div className="flex flex-wrap gap-2">
@@ -185,8 +185,7 @@ function RecommendationList({
 
                           {matchInfo.matchingFeatures && matchInfo.matchingFeatures.length > 0 && (
                             <div>
-                              <h4 className="text-sm font-semibold text-rd-dark mb-2 flex items-center gap-2">
-                                <CheckCircleIcon className="w-4 h-4 text-green-500" />
+                              <h4 className="text-sm font-semibold text-green-600 mb-2">
                                 Funcionalidades que deram match:
                               </h4>
                               <div className="flex flex-wrap gap-2">
