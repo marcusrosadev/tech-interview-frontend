@@ -29,7 +29,13 @@ function MatchProgressBar({
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-gray-700">Preferências Match</span>
-          <span className="text-sm font-semibold text-indigo-600">{preferencePercentage}%</span>
+          <span
+            className={`text-sm font-semibold ${
+              preferencePercentage === 0 ? 'text-gray-400' : 'text-indigo-600'
+            }`}
+          >
+            {preferencePercentage}%
+          </span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
           <div
@@ -46,7 +52,13 @@ function MatchProgressBar({
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-gray-700">Funcionalidades Match</span>
-          <span className="text-sm font-semibold text-indigo-600">{featurePercentage}%</span>
+          <span
+            className={`text-sm font-semibold ${
+              featurePercentage === 0 ? 'text-gray-400' : 'text-indigo-600'
+            }`}
+          >
+            {featurePercentage}%
+          </span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
           <div

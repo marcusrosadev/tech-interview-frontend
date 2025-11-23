@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircleIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
+import {
+  CheckCircleIcon,
+  ChevronDownIcon,
+  ClipboardDocumentListIcon,
+} from '@heroicons/react/24/outline';
 import MatchProgressBar from '@components/shared/MatchProgressBar';
 import { getIconComponent } from '@utils/iconMapper';
 import type { Recommendation } from '@appTypes';
@@ -55,10 +59,13 @@ function RecommendationList({
 
       {!hasRecommendations && (
         <div className="bg-white rounded-xl shadow-lg p-8 text-center">
-          <p className="text-gray-500 italic text-lg">
-            Nenhuma recomendação encontrada. Selecione suas preferências e funcionalidades para
-            receber recomendações personalizadas.
-          </p>
+          <div className="flex flex-col items-center justify-center gap-4">
+            <ClipboardDocumentListIcon className="w-12 h-12 text-indigo-400" />
+            <p className="text-gray-500 italic text-lg">
+              Nenhuma recomendação encontrada. Selecione suas preferências e funcionalidades para
+              receber recomendações personalizadas.
+            </p>
+          </div>
         </div>
       )}
 
@@ -112,29 +119,26 @@ function RecommendationList({
                         )}
                       </div>
 
-                      {/* Badge de Categoria */}
-                      {recommendation.category && (
-                        <div className="mb-3">
+                      {/* Badge de Categoria e Pontuação */}
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
+                        {recommendation.category && (
                           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-rd-cyan-light text-rd-dark">
                             {recommendation.category}
                           </span>
-                        </div>
-                      )}
+                        )}
+                        {/* Badge de Pontuação */}
+                        {matchInfo.score !== undefined && (
+                          <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
+                            Pontuação: {matchInfo.score}
+                          </span>
+                        )}
+                      </div>
 
-                      {/* Pontuação Total e Detalhada */}
+                      {/* Detalhe Sutil da Pontuação */}
                       {matchInfo.score !== undefined && (
-                        <div className="mt-3 space-y-2">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-semibold text-gray-700">Pontuação:</span>
-                            <span className="px-3 py-1 bg-rd-cyan-light text-rd-dark rounded-full text-sm font-bold">
-                              {matchInfo.score}
-                            </span>
-                          </div>
-                          {/* Pontuação Detalhada */}
-                          <div className="text-xs text-gray-600">
-                            {matchInfo.preferenceMatches} Preferência{matchInfo.preferenceMatches !== 1 ? 's' : ''} /{' '}
-                            {matchInfo.featureMatches} Funcionalidade{matchInfo.featureMatches !== 1 ? 's' : ''}
-                          </div>
+                        <div className="text-sm text-gray-500 mb-3">
+                          {matchInfo.preferenceMatches} Preferência{matchInfo.preferenceMatches !== 1 ? 's' : ''} /{' '}
+                          {matchInfo.featureMatches} Funcionalidade{matchInfo.featureMatches !== 1 ? 's' : ''}
                         </div>
                       )}
                     </div>

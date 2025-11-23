@@ -18,7 +18,14 @@ const useForm = (initialState: FormData) => {
     }));
   };
 
-  return { formData, handleChange };
+  /**
+   * Reseta o formulário para o estado inicial
+   */
+  const reset = (): void => {
+    setFormData(initialState);
+  };
+
+  return { formData, handleChange, reset };
 };
 
 export default useForm;

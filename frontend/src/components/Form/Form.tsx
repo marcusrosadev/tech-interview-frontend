@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import toast from 'react-hot-toast';
+import { useToast } from '@hooks/useToast';
 import { Preferences, Features, RecommendationType } from './Fields';
 import { SubmitButton } from './SubmitButton';
+import { ResetButton } from './ResetButton';
 import useProducts from '@hooks/useProducts';
 import useForm from '@hooks/useForm';
 import useRecommendations from '@hooks/useRecommendations';
@@ -10,14 +11,15 @@ import type { RecommendationType as RecommendationTypeValue } from '@constants/r
 
 interface FormProps {
   onRecommendationsChange: (recommendations: Recommendation[], formData: FormData) => void;
+  onReset?: () => void;
 }
 
 /**
  * Componente de formulário para coleta de preferências e features do usuário
  */
-function Form({ onRecommendationsChange }: FormProps) {
+function Form({ onRecommendationsChange, onReset }: FormProps) {
   const { preferences, features, products } = useProducts();
-  const { formData, handleChange } = useForm({
+  const { formData, handleChange, reset } = useForm({
     selectedPreferences: [],
     selectedFeatures: [],
     selectedRecommendationType: '',
@@ -25,6 +27,7 @@ function Form({ onRecommendationsChange }: FormProps) {
 
   const { getRecommendations } = useRecommendations(products);
   const [validationError, setValidationError] = useState<string>('');
+  const { showToast } = useToast();
 
   /**
    * Handler para submissão do formulário
@@ -38,7 +41,7 @@ function Form({ onRecommendationsChange }: FormProps) {
     if (!formData.selectedRecommendationType) {
       const errorMsg = 'Por favor, selecione um tipo de recomendação.';
       setValidationError(errorMsg);
-      toast.error(errorMsg);
+      showToast(errorMsg, 'error');
       return;
     }
 
@@ -49,7 +52,7 @@ function Form({ onRecommendationsChange }: FormProps) {
     ) {
       const errorMsg = 'Por favor, selecione pelo menos uma preferência ou funcionalidade.';
       setValidationError(errorMsg);
-      toast.error(errorMsg);
+      showToast(errorMsg, 'error');
       return;
     }
 
@@ -62,60 +65,85 @@ function Form({ onRecommendationsChange }: FormProps) {
 
       // Toast de sucesso
       if (recommendations.length > 0) {
-        toast.success(
+        showToast(
           `${recommendations.length} produto${recommendations.length > 1 ? 's' : ''} encontrado${recommendations.length > 1 ? 's' : ''}!`,
-          {
-            icon: '✅',
-            duration: 3000,
-          }
+          'success',
+          3000
         );
       } else {
-        toast.error('Nenhum produto encontrado com os critérios selecionados.', {
-          duration: 3000,
-        });
+        showToast('Nenhum produto encontrado com os critérios selecionados.', 'error', 3000);
       }
     }
   };
 
+  /**
+   * Handler para resetar o formulário
+   * Limpa todas as seleções e chama o callback onReset se fornecido
+   */
+  const handleReset = (): void => {
+    reset();
+    setValidationError('');
+    if (onReset) {
+      onReset();
+    }
+    showToast('Seleções limpas com sucesso.', 'success', 2000);
+  };
+
   return (
-    <form
-      className="w-full bg-white rounded-xl shadow-lg p-6"
-      onSubmit={handleSubmit}
-      noValidate
-    >
-      <Preferences
-        preferences={preferences}
-        onPreferenceChange={(selected) =>
-          handleChange('selectedPreferences', selected)
-        }
-      />
-      <div className="border-t border-gray-300 my-6"></div>
-      <Features
-        features={features}
-        onFeatureChange={(selected) =>
-          handleChange('selectedFeatures', selected)
-        }
-      />
-      <div className="border-t border-gray-300 my-6"></div>
-      <RecommendationType
-        selectedType={formData.selectedRecommendationType}
-        onRecommendationTypeChange={(selected: RecommendationTypeValue) => {
-          handleChange('selectedRecommendationType', selected);
-          // Limpa erro de validação quando tipo é selecionado
-          if (validationError && selected) {
-            setValidationError('');
+    <>
+      <form
+        id="recommendation-form"
+        className="w-full bg-white rounded-xl shadow-lg p-6 mb-20"
+        onSubmit={handleSubmit}
+        noValidate
+      >
+        <Preferences
+          preferences={preferences}
+          selectedPreferences={formData.selectedPreferences}
+          onPreferenceChange={(selected) =>
+            handleChange('selectedPreferences', selected)
           }
-        }}
-      />
-      {validationError && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-          {validationError}
+        />
+        <div className="border-t border-gray-300 my-6"></div>
+        <Features
+          features={features}
+          selectedFeatures={formData.selectedFeatures}
+          onFeatureChange={(selected) =>
+            handleChange('selectedFeatures', selected)
+          }
+        />
+        <div className="border-t border-gray-300 my-6"></div>
+        <RecommendationType
+          selectedType={formData.selectedRecommendationType}
+          onRecommendationTypeChange={(selected: RecommendationTypeValue) => {
+            handleChange('selectedRecommendationType', selected);
+            // Limpa erro de validação quando tipo é selecionado
+            if (validationError && selected) {
+              setValidationError('');
+            }
+          }}
+        />
+        {validationError && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            {validationError}
+          </div>
+        )}
+      </form>
+
+      {/* Footer fixo com botões de ação */}
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white shadow-2xl z-50 border-t border-gray-200">
+        <div className="flex justify-end space-x-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ResetButton onClick={handleReset} />
+          <button
+            type="submit"
+            form="recommendation-form"
+            className="inline-flex items-center bg-rd-dark hover:bg-rd-darker text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg focus:outline-none active:outline-none"
+          >
+            Obter recomendação
+          </button>
         </div>
-      )}
-      <div className="mt-6">
-        <SubmitButton text="Obter recomendação" />
       </div>
-    </form>
+    </>
   );
 }
 
