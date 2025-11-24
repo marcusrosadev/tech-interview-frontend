@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { Preferences, Features, RecommendationType } from '../Fields';
 import type { FormData } from '@appTypes';
 import type { RecommendationType as RecommendationTypeValue } from '@constants/recommendationTypes';
@@ -9,68 +8,23 @@ interface FormStepperProps {
   preferences: string[];
   features: string[];
   formData: FormData;
+  currentStep: number;
+  direction: 'left' | 'right';
   onFormDataChange: (field: keyof FormData, value: string | string[]) => void;
   validationError?: string;
 }
 
-const TOTAL_STEPS = 3;
+export const TOTAL_STEPS = 3;
 
 function FormStepper({
   preferences,
   features,
   formData,
+  currentStep,
+  direction,
   onFormDataChange,
   validationError,
 }: FormStepperProps) {
-  const [currentStep, setCurrentStep] = useState<number>(1);
-  const [direction, setDirection] = useState<'left' | 'right'>('right');
-
-  useEffect(() => {
-    if (
-      formData.selectedPreferences.length === 0 &&
-      formData.selectedFeatures.length === 0 &&
-      formData.selectedRecommendationType === ''
-    ) {
-      setCurrentStep(1);
-      setDirection('right');
-    }
-  }, [formData.selectedPreferences, formData.selectedFeatures, formData.selectedRecommendationType]);
-
-  const goToNextStep = (): void => {
-    if (currentStep < TOTAL_STEPS) {
-      setDirection('right');
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const goToPreviousStep = (): void => {
-    if (currentStep > 1) {
-      setDirection('left');
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
-  const goToStep = (step: number): void => {
-    if (step > currentStep) {
-      setDirection('right');
-    } else if (step < currentStep) {
-      setDirection('left');
-    }
-    setCurrentStep(step);
-  };
-
-  const canGoNext = (): boolean => {
-    switch (currentStep) {
-      case 1:
-        return true;
-      case 2:
-        return true;
-      case 3:
-        return !!formData.selectedRecommendationType;
-      default:
-        return false;
-    }
-  };
 
   const getStepTitle = (): string => {
     switch (currentStep) {
@@ -96,7 +50,7 @@ function FormStepper({
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2">
           <div
-            className="bg-indigo-600 h-2 rounded-full transition-all duration-300 ease-out"
+            className="bg-rd-cyan h-2 rounded-full transition-all duration-300 ease-out"
             style={{ width: `${(currentStep / TOTAL_STEPS) * 100}%` }}
           />
         </div>
@@ -162,57 +116,10 @@ function FormStepper({
           )}
         </AnimatePresence>
       </div>
-
-      <div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-200">
-        <button
-          type="button"
-          onClick={goToPreviousStep}
-          disabled={currentStep === 1}
-          className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-            currentStep === 1
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
-        >
-          <ChevronLeftIcon className="w-5 h-5" />
-          Voltar
-        </button>
-
-        <div className="flex gap-2">
-          {Array.from({ length: TOTAL_STEPS }, (_, i) => i + 1).map((step) => (
-            <button
-              key={step}
-              type="button"
-              onClick={() => goToStep(step)}
-              className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                step === currentStep
-                  ? 'bg-indigo-600 w-8'
-                  : step < currentStep
-                    ? 'bg-indigo-300'
-                    : 'bg-gray-300'
-              }`}
-              aria-label={`Ir para etapa ${step}`}
-            />
-          ))}
-        </div>
-
-        <button
-          type="button"
-          onClick={goToNextStep}
-          disabled={currentStep === TOTAL_STEPS || !canGoNext()}
-          className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-            currentStep === TOTAL_STEPS || !canGoNext()
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              : 'bg-indigo-600 text-white hover:bg-indigo-700'
-          }`}
-        >
-          Avançar
-          <ChevronRightIcon className="w-5 h-5" />
-        </button>
-      </div>
     </div>
   );
 }
 
+export { FormStepper };
 export default FormStepper;
 

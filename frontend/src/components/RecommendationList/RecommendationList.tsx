@@ -56,7 +56,7 @@ function RecommendationList({
       {!hasRecommendations && (
         <div className="bg-white rounded-xl shadow-lg p-8 text-center">
           <div className="flex flex-col items-center justify-center gap-4">
-            <ClipboardDocumentListIcon className="w-12 h-12 text-indigo-400" />
+            <ClipboardDocumentListIcon className="w-12 h-12 text-rd-cyan" />
             <p className="text-gray-500 italic text-lg">
               Nenhuma recomendação encontrada. Selecione suas preferências e funcionalidades para
               receber recomendações personalizadas.
@@ -124,7 +124,7 @@ function RecommendationList({
                         )}
                         {/* Badge de Pontuação */}
                         {matchInfo.score !== undefined && (
-                          <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
+                          <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-rd-cyan-light text-rd-dark">
                             Pontuação: {matchInfo.score}
                           </span>
                         )}

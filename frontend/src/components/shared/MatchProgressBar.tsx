@@ -25,7 +25,7 @@ function MatchProgressBar({
           <span className="text-sm font-medium text-gray-700">Preferências Match</span>
           <span
             className={`text-sm font-semibold ${
-              preferencePercentage === 0 ? 'text-gray-400' : 'text-indigo-600'
+              preferencePercentage === 0 ? 'text-gray-400' : 'text-rd-cyan'
             }`}
           >
             {preferencePercentage}%
@@ -33,7 +33,7 @@ function MatchProgressBar({
         </div>
         <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
           <div
-            className="bg-indigo-600 h-full rounded-full transition-all duration-500 ease-out"
+            className="bg-rd-cyan h-full rounded-full transition-all duration-500 ease-out"
             style={{ width: `${preferencePercentage}%` }}
           />
         </div>
@@ -47,7 +47,7 @@ function MatchProgressBar({
           <span className="text-sm font-medium text-gray-700">Funcionalidades Match</span>
           <span
             className={`text-sm font-semibold ${
-              featurePercentage === 0 ? 'text-gray-400' : 'text-indigo-600'
+              featurePercentage === 0 ? 'text-gray-400' : 'text-rd-cyan'
             }`}
           >
             {featurePercentage}%
@@ -55,7 +55,7 @@ function MatchProgressBar({
         </div>
         <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
           <div
-            className="bg-indigo-600 h-full rounded-full transition-all duration-500 ease-out"
+            className="bg-rd-cyan h-full rounded-full transition-all duration-500 ease-out"
             style={{ width: `${featurePercentage}%` }}
           />
         </div>

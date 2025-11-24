@@ -40,7 +40,7 @@ function App() {
           <h1 className="text-4xl font-bold text-rd-dark mb-4">
             Recomendador de Produtos RD Station
           </h1>
-          <p className="text-lg text-gray-700 max-w-4xl mx-auto">
+          <p className="text-lg text-gray-700 max-w-6xl mx-auto">
             Bem-vindo ao Recomendador de Produtos RD Station. Aqui você pode encontrar uma
             variedade de produtos da RD Station, cada um projetado para atender às necessidades
             específicas do seu negócio. De CRM a Marketing, de Conversas a Inteligência
@@ -52,14 +52,14 @@ function App() {
         </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-            <div className="order-2 lg:order-1">
+            <div className="order-1">
               <Form
                 onRecommendationsChange={handleRecommendationsChange}
                 onReset={handleReset}
               />
             </div>
 
-            <div className="order-1 lg:order-2">
+            <div className="order-2">
               <RecommendationList
                 recommendations={recommendations}
                 selectedPreferences={formData.selectedPreferences}
